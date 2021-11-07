@@ -33,7 +33,7 @@ class TableManger:
 
     self.file_path = file_path
     self.ext = ext
-    self.df = None
+    self.df = pd.DataFrame()
     
     if load:
       self.df = TableManger.load(self, ext)
@@ -42,7 +42,7 @@ class TableManger:
   def load(self, ext: str ="csv", **kwargs) -> pd.DataFrame or None:
 
     print("Loading data: " + self.file_path + "." + ext)
-    self.df = None
+    self.df = pd.DataFrame()
 
     try:
       if ext == "csv":

@@ -13,7 +13,7 @@ class rq:
   hpp = header_proxy_pool(logger)
 
   @staticmethod
-  def get(html:str, args={}, delay=0.5, limit=50, tries=0):
+  def get(html:str, proxies=True, delay=0.5, limit=50, tries=0):
     try:
       curtime = time.time()
       dt = curtime - rq.last_request
@@ -22,9 +22,14 @@ class rq:
       if dt < delay:
         time.sleep(delay-dt)
 
-      s = rq.requests.get(html, args, proxies={"http": rq.hpp.get_currentproxy(),
-                                         "https": rq.hpp.get_currentproxy()},
-           headers=rq.hpp.get_currentheader(), timeout=15)
+      a = {}
+      if proxies:
+        a = {"http": rq.hpp.get_currentproxy(),
+             "https": rq.hpp.get_currentproxy()}
+
+      print(f"REQUEST: {html}")
+      s = rq.requests.get(html, proxies=a,
+           headers=rq.hpp.get_currentheader(), timeout=5)
 
       
       rq.last_request = time.time()

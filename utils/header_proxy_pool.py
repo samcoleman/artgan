@@ -110,7 +110,7 @@ class header_proxy_pool:
       self.firstproxy = self.current_proxy
 
       self.logger.debug("Updating proxy & header pool")
-      self.logger.debug("Starting proxy:" + self.current_proxy)
+      self.logger.debug("Creating proxies:" + self.current_proxy)
 
   def get_currentproxy(self):
       return self.current_proxy
