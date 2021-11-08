@@ -41,7 +41,7 @@ class rq:
 
       if tries < limit:
           rq.logger.debug("Attempt:" + str(tries + 1))
-          return rq.get(html, delay, limit, tries + 1)
+          return rq.get(html, proxies, delay, limit, tries + 1)
       else:
           rq.logger.debug("Something very wrong, aborting request")
           return False
