@@ -138,7 +138,7 @@ def parse_artwork_data(soup: BeautifulSoup):
 
 def get_artwork_data(artwork_href: str):
     html = f'https://www.wikiart.org{artwork_href}'
-    r = rq.get(html, proxies=False, delay=0.5)
+    r = rq.get(html, proxies=False, delay=0.25)
     soup = BeautifulSoup(r.text, 'html.parser')
     return parse_artwork_data(soup)
 

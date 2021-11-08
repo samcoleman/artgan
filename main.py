@@ -44,15 +44,25 @@ artworks_list = artwork_list_table.get()
 artwork_data_table = TableManger("data/artwork_data", ext="json")
 artwork_data = artwork_data_table.get()
 
+#Drop rows where artwork_href has not been found
+artworks_list = artworks_list[artworks_list['artwork_href'].notnull()]
 
 last_artist = ""
 
+i = 0
+l = len(artworks_list.index)
 for index, row in artworks_list.iterrows():
+    i += 1
+
     #Pass if artists artworks have already been found
     if len(artwork_data.index) == 0:
         print("No data stored in data\\artwork_data.json")
     elif artwork_data['artwork_href'].str.contains(row['artwork_href']).any():
-        print(f"Already collected artwork data for {row['artwork_href']}")
+        #print(f"Already collected artwork data for {row['artwork_href']}")
+        continue
+
+    #Pass if artwork_href incorrect format 
+    if row['artwork_href'][0:3] != "/en":
         continue
 
     data = get_artwork_data(row['artwork_href'])
@@ -71,4 +81,6 @@ for index, row in artworks_list.iterrows():
     if row['artist'] != last_artist:
         artwork_data_table.save(artwork_data, ext="json")
         last_artist = row['artist']
+
+        print(f"Progress: {i*100/l}%")
 

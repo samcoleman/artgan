@@ -29,7 +29,7 @@ class rq:
 
       print(f"REQUEST: {html}")
       s = rq.requests.get(html, proxies=a,
-           headers=rq.hpp.get_currentheader(), timeout=5)
+           headers=rq.hpp.get_currentheader(), timeout=30)
 
       
       rq.last_request = time.time()
