@@ -10,7 +10,7 @@ def cleanup(df: pd.DataFrame):
     df["res_x"] = res_cols[0]
     df["res_y"] = res_cols[1]
 
-    df["downloaded"] = False
+    
 
     df['img_url'] = df['img_url'].str.lower()
     df['img_url'] = df['img_url'].str.replace('!large.jpg' ,'')

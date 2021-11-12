@@ -48,6 +48,7 @@ artwork_data = artwork_data_table.get()
 artworks_list = artworks_list[artworks_list['artwork_href'].notnull()]
 
 last_artist = ""
+data = pd.DataFrame()
 
 i = 0
 l = len(artworks_list.index)
@@ -57,7 +58,8 @@ for index, row in artworks_list.iterrows():
     #Pass if artists artworks have already been found
     if len(artwork_data.index) == 0:
         print("No data stored in data\\artwork_data.json")
-    elif artwork_data['artwork_href'].str.contains(row['artwork_href']).any():
+    #This is so inefficient!!! at large scales
+    elif artwork_data['artwork_href'].eq(row['artwork_href']).any(): #.str.contains(row['artwork_href']).any():
         #print(f"Already collected artwork data for {row['artwork_href']}")
         continue
 
@@ -65,22 +67,24 @@ for index, row in artworks_list.iterrows():
     if row['artwork_href'][0:3] != "/en":
         continue
 
-    data = get_artwork_data(row['artwork_href'])
+    try:
+        data = get_artwork_data(row['artwork_href'])
+        data['artwork'] = row['artwork']
+        data['artwork_href'] = row['artwork_href']
+        data['date'] = row['date']
 
-    data['artwork'] = row['artwork']
-    data['artwork_href'] = row['artwork_href']
-    data['date'] = row['date']
+        data['artist_href'] = row['artist_href']
+        data['artist'] = row['artist']
+        data['life'] = row['life']
+        data['num_artworks'] = row['num_artworks']
 
-    data['artist_href'] = row['artist_href']
-    data['artist'] = row['artist']
-    data['life'] = row['life']
-    data['num_artworks'] = row['num_artworks']
+        artwork_data = artwork_data.append(data, ignore_index=True)
+        
+        if row['artist'] != last_artist:
+            artwork_data_table.save(artwork_data, ext="json")
+            last_artist = row['artist']
 
-    artwork_data = artwork_data.append(data, ignore_index=True)
-    
-    if row['artist'] != last_artist:
-        artwork_data_table.save(artwork_data, ext="json")
-        last_artist = row['artist']
-
-        print(f"Progress: {i*100/l}%")
+            print(f"Progress: {i*100/l}%")
+    except:
+        continue
 
