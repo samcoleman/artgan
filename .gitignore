@@ -4,4 +4,6 @@ __pycache__
 ZED_API.json
 *.log
 database.ini
-/img
+
+img/
+img - Copy/
