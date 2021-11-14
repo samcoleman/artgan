@@ -2,7 +2,7 @@
 from utils.wikiart_api import get_artist_list, get_artist_artworks, get_artwork_data
 from utils.tables import TableManger, TableFunc
 import pandas as pd
-
+from pipeline.artwork_data_cleanup import cleanup
 
 #%%
 #artist_list = TableManger("data/artists", ext="csv", load=False)
@@ -88,3 +88,16 @@ for index, row in artworks_list.iterrows():
     except:
         continue
 
+#%%
+artwork_data_table = TableManger("data/artwork_data", ext="json")
+artwork_data = artwork_data_table.get()
+
+clean_data_table = TableManger("data/clean_data", ext="json")
+clean_data = clean_data_table.get()
+
+clean_data = cleanup(artwork_data)
+
+clean_data["downloaded"] = False
+
+clean_data_table.save(clean_data, ext="json")
+# %%
