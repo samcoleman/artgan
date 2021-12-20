@@ -9,6 +9,7 @@ from pipeline.artwork_data_cleanup import cleanup
 #t = get_artist_list()
 #artist_list.save(t, ext='csv')
 
+
 """
 artwork_list_table = TableManger("data/artworks", ext="csv")
 artworks_list = artwork_list_table.get()
